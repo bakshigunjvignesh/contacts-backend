@@ -5,7 +5,7 @@ const Contact = require("../models/contectModels");
 // @Access Public
 // @Route GET /api/contacts
 const getContact = asyncHandler(async (req, res) => {
-  const contact = await Contact.find();
+  const contact = await Contact.find({ user_id: req.user.id });
   if (!contact) {
     throw new Error("No contact found");
   } else {
@@ -44,7 +44,12 @@ const addContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are mandatory");
   } else {
-    const contact = await Contact.create({ name, email, phone });
+    const contact = await Contact.create({
+      name,
+      email,
+      phone,
+      user_id: req.user.id,
+    });
     res.status(200).json({ message: "Contact Added", data: contact });
   }
 });

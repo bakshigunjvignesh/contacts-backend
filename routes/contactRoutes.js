@@ -8,9 +8,11 @@ const {
   getIdContact,
   addContact,
 } = require("../controller/contactController");
+const validateToken = require("../middleware/validateTokenHandler");
 
 router.route("/").get(getContact).post(addContact);
 
+router.use(validateToken);
 router
   .route("/:id")
   .post(createContact)
